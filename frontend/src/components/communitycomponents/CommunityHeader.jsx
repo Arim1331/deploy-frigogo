@@ -9,13 +9,14 @@ const DEFAULT_SORT_OPTIONS = [
 
 export const CommunityHeader = ({
   title = "요리 인증 커뮤니티",
-  placeholder = "요리명, 닉네임, 재료로 검색...",
+  placeholder = "요리명, 재료 검색...",
   showSort = true,
   sortOptions = DEFAULT_SORT_OPTIONS,
   defaultSortKey,
   onSearch, // ({ keyword, sort }) => void
   onSortChange, // (option) => void
   onKeywordChange,
+  keyword: controlledKeyword, // (선택) 전달 시 부모 상태와 검색어를 동기화
 }) => {
   const dropdownRef = useRef(null);
 
@@ -41,7 +42,10 @@ export const CommunityHeader = ({
     onSortChange?.(option);
   };
 
-  const [keyword, setKeyword] = useState("");
+  const [innerKeyword, setKeyword] = useState("");
+  // keyword prop 미전달 시 기존처럼 내부 state 사용
+  const keyword =
+    controlledKeyword !== undefined ? controlledKeyword : innerKeyword;
   const [isError, setIsError] = useState(false);
   const [triedSubmit, setTriedSubmit] = useState(false); // 검색 시도 여부
 
